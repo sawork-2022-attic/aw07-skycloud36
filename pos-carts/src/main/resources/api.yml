@@ -1,0 +1,179 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Carts
+  license:
+    name: MIT
+paths:
+  /carts:
+    get:
+      summary: List all carts
+      operationId: listCarts
+      tags:
+        - carts
+      responses:
+        '200':
+          description: A paged array of products
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /carts/{cartId}:
+    get:
+      summary: Info for a specific cart
+      operationId: showCartById
+      tags:
+        - cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: The id of the cart to retrieve
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /carts/sum/{cartId}:
+    get:
+      summary: cost
+      operationId: sumCost
+      tags:
+        - cartCost
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: The id of the cart to sum
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                type: double
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /carts/add/cart/{username}:
+    post:
+      summary: add a new Cart
+      operationId: addCart
+      tags:
+        - cart
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The name of the user
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /carts/add/item/{cartId}/{productId}:
+    post:
+      summary: add a new Item to Cart
+      operationId: addItem
+      tags:
+        - cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: The id of the cart
+          schema:
+            type: integer
+        - name: productId
+          in: path
+          required: true
+          description: The id of the product
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Carts:
+      type: array
+      items:
+        $ref: "#/components/schemas/Cart"
+    Cart:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        cartItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/Item"
+        user:
+          type: string
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        productId:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
