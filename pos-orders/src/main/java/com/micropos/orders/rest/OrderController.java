@@ -43,5 +43,12 @@ public class OrderController implements OrdersApi {
         return new ResponseEntity<>(orderMapper.toOrderDto(order),HttpStatus.OK);
     }
 
-
+    @Override
+    public ResponseEntity<OrderDto> makeOrder(Integer cartId){
+        Order order = orderService.makeOrder(cartId);
+        if(order == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(orderMapper.toOrderDto(order),HttpStatus.OK);
+    }
 }

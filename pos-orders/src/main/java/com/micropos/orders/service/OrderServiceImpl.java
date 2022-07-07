@@ -18,6 +18,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -28,16 +29,7 @@ public class OrderServiceImpl implements OrderService {
 
         List<Order> orders = new ArrayList<>();
         it.forEach(e ->{
-            String urlString = "http://pos-carts/api/carts/{cartId}";
-
-            HashMap<String, Object> result = new HashMap<String, Object>();
-            Map<String, Object> param = new HashMap<>();
-            param.put("cartId", e.getCartId());
-            // 开始调用远程接口
-            result = this.restTemplate
-                    .exchange(urlString, HttpMethod.GET, null, new ParameterizedTypeReference<HashMap<String, Object>>() {
-                    }, param).getBody();
-            e.setCart(result);
+            e.setCart(getCart(e.getCartId()));
             orders.add(e);
         });
 
@@ -47,21 +39,38 @@ public class OrderServiceImpl implements OrderService {
     public Order getOrder(int id){
         if(orderRepository.findById(id).isPresent()){
             Order target = orderRepository.findById(id).get();
-            HashMap<String, Object> result;
-
-            String urlString = "http://pos-carts/api/carts/{cartId}";
-
-            Map<String, Object> param = new HashMap<>();
-            param.put("cartId", target.getCartId());
-            // 开始调用远程接口
-            result = this.restTemplate
-                    .exchange(urlString, HttpMethod.GET, null, new ParameterizedTypeReference<HashMap<String, Object>>() {
-                    }, param).getBody();
-            target.setCart(result);
+            target.setCart(getCart(target.getCartId()));
             return target;
         }else{
             return null;
         }
+    }
+
+    @Override
+    public Order makeOrder(int cartId) {
+        if(orderRepository.count() == 0){
+            orderRepository.findAll();
+        }
+        Order order = new Order();
+        order.setCartId(cartId);
+        order.setId((int)orderRepository.count()+1);
+        orderRepository.save(order);
+        order.setCart(getCart(cartId));
+        return order;
+    }
+
+    private Map<String, Object> getCart(int cartId){
+        HashMap<String, Object> result;
+
+        String urlString = "http://pos-carts/api/carts/{cartId}";
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("cartId", cartId);
+        // 开始调用远程接口
+        result = this.restTemplate
+                .exchange(urlString, HttpMethod.GET, null, new ParameterizedTypeReference<HashMap<String, Object>>() {
+                }, param).getBody();
+        return result;
     }
 
 }

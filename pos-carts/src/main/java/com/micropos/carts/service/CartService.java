@@ -10,4 +10,5 @@ public interface CartService {
     public double sumCost(int id);
     public Cart addCart(String username);
     public Cart addItem(int cartId, String productId);
+    public Object makeOrder(int cartId);
 }

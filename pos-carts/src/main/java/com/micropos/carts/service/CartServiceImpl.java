@@ -83,4 +83,21 @@ public class CartServiceImpl implements CartService {
         }
         return null;
     }
+
+    @Override
+    public Object makeOrder(int cartId){
+        if(cartRepository.findById(cartId).isPresent()){
+            HashMap<String, Object> result = new HashMap<String, Object>();
+            String urlString = "http://pos-orders/api/orders/make/{cartId}";
+
+            Map<String, Object> param = new HashMap<>();
+            param.put("cartId", cartId);
+            // 开始调用远程接口
+            result = this.restTemplate
+                    .exchange(urlString, HttpMethod.GET, null, new ParameterizedTypeReference<HashMap<String, Object>>() {
+                    }, param).getBody();
+            return result;
+        }
+        return null;
+    }
 }

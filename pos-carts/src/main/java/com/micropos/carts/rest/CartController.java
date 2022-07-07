@@ -28,7 +28,7 @@ public class CartController implements CartsApi {
     public ResponseEntity<List<CartDto>> listCarts(){
         List<CartDto> carts = new ArrayList<>(cartMapper.toCartsDto(this.cartService.carts()));
         if (carts.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(carts, HttpStatus.OK);
     }
@@ -37,7 +37,7 @@ public class CartController implements CartsApi {
     public ResponseEntity<CartDto> showCartById(Integer cartId){
         CartDto cart = cartMapper.toCartDto(this.cartService.getCart(cartId));
         if (cart == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
@@ -57,8 +57,17 @@ public class CartController implements CartsApi {
     public ResponseEntity<CartDto> addItem(Integer cartId, String productId){
         Cart cart = cartService.addItem(cartId, productId);
         if(cart == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(cartMapper.toCartDto(cart),HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> makeOrder(Integer cartId){
+        Object o = cartService.makeOrder(cartId);
+        if(o == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(o, HttpStatus.OK);
     }
 }
