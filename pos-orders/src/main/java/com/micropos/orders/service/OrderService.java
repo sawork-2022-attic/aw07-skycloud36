@@ -8,4 +8,5 @@ public interface OrderService {
     public List<Order> orders();
     public Order getOrder(int id);
     public Order makeOrder(int cartId);
+    public Object deliverOrder(int orderId);
 }

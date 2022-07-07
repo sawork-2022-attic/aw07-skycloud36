@@ -59,6 +59,21 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Override
+    public Object deliverOrder(int orderId) {
+        HashMap<String, Object> result;
+
+        String urlString = "http://pos-delivery/api/deliveries/confirm/{orderId}";
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("orderId", orderId);
+        // 开始调用远程接口
+        result = this.restTemplate
+                .exchange(urlString, HttpMethod.GET, null, new ParameterizedTypeReference<HashMap<String, Object>>() {
+                }, param).getBody();
+        return result;
+    }
+
     private Map<String, Object> getCart(int cartId){
         HashMap<String, Object> result;
 

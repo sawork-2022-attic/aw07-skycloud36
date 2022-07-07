@@ -51,4 +51,14 @@ public class OrderController implements OrdersApi {
         }
         return new ResponseEntity<>(orderMapper.toOrderDto(order),HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Object> deliverOrder(Integer orderId){
+        Object o = orderService.deliverOrder(orderId);
+        if(o == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(o,HttpStatus.OK);
+    }
+
 }
