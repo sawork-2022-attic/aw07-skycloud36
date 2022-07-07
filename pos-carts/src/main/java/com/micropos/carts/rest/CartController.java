@@ -26,11 +26,11 @@ public class CartController implements CartsApi {
 
     @Override
     public ResponseEntity<List<CartDto>> listCarts(){
-        List<CartDto> products = new ArrayList<>(cartMapper.toCartsDto(this.cartService.carts()));
-        if (products.isEmpty()) {
+        List<CartDto> carts = new ArrayList<>(cartMapper.toCartsDto(this.cartService.carts()));
+        if (carts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(products, HttpStatus.OK);
+        return new ResponseEntity<>(carts, HttpStatus.OK);
     }
 
     @Override

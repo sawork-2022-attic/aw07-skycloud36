@@ -27,7 +27,7 @@ paths:
   /orders/{orderId}:
     get:
       summary: Info for a specific order
-      operationId: showCartById
+      operationId: showOrderById
       tags:
         - order
       parameters:
@@ -63,11 +63,8 @@ components:
         id:
           type: integer
           format: int32
-        cartId:
-          type: integer
-          format: int32
-        user:
-          type: string
+        cart:
+          type: map
 
     Error:
       type: object

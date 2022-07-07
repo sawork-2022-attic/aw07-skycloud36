@@ -1,5 +1,6 @@
 package com.micropos.orders;
 
+import com.micropos.orders.model.Order;
 import com.micropos.orders.repository.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,13 @@ public class MyRunner implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        
+        logger.info("initializing orders");
+
+        Order o1 = new Order();
+        o1.setCartId(1);
+        orderRepository.save(o1);
+        Order o2 = new Order();
+        o2.setCartId(2);
+        orderRepository.save(o2);
     }
 }

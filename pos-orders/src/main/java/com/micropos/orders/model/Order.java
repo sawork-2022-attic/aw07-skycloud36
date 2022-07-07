@@ -4,6 +4,7 @@ package com.micropos.orders.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Map;
 
 @Table(name = "ORDERS")
 @Entity
@@ -14,18 +15,19 @@ public class Order implements Serializable {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "user_name")
-    private String user;
-
     @Column(name = "cartId")
     private int cartId;
+
+    @Transient
+    private Map cart;
 
 
     public Order() {}
     public int getId(){return id;}
     public void setId(int id){this.id = id;}
-    public String getUser(){return user;}
-    public void setUser(String user){this.user = user;}
     public int getCartId(){return this.cartId;}
     public void setCartId(int cartId){this.cartId = cartId;}
+    @Transient
+    public Map getCart(){return this.cart;}
+    public void setCart(Map cart){this.cart = cart;}
 }

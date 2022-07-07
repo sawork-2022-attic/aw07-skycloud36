@@ -26,27 +26,27 @@ public class MyRunner implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
 
-        logger.info("initializing users");
+        logger.info("initializing carts");
 
-        Cart u1 = new Cart();
-        u1.setUser("Tony");
-        cartRepository.save(u1);
+        Cart c1 = new Cart();
+        c1.setUser("Tony");
+        cartRepository.save(c1);
         Item item = new Item();
         item.setProductId("001");
         item.setQuantity(10);
-        u1.addItem(item);
+        c1.addItem(item);
         item = new Item();
         item.setProductId("002");
         item.setQuantity(10);
-        u1.addItem(item);
+        c1.addItem(item);
 
-        Cart u2 = new Cart();
-        u2.setUser("AiLy");
-        cartRepository.save(u2);
+        Cart c2 = new Cart();
+        c2.setUser("AiLy");
+        cartRepository.save(c2);
         item = new Item();
         item.setProductId("003");
         item.setQuantity(10);
-        u2.addItem(item);
+        c2.addItem(item);
 
         Cart u3 = new Cart();
         u3.setUser("Bob");
