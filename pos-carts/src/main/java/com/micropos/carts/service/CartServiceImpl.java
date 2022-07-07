@@ -25,10 +25,6 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public CartServiceImpl(@Autowired CartRepository cartRepository) {
-        this.cartRepository = cartRepository;
-    }
-
     @Override
     public List<Cart> carts() {
         Iterable<Cart> it = cartRepository.findAll();
